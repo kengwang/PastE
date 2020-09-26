@@ -1,0 +1,150 @@
+.版本 2
+
+.如果真 (用户_是否激活 (到文本 (fromQQ)) ＝ 假)
+    返回 (#消息_拦截)
+.如果真结束
+
+
+
+msgarr ＝ 分割文本 (msg, “ ”, )
+' /**********************普通用户***************************/
+
+.如果真 (msgarr [1] ＝ “激活账户”)
+    .如果 (取数组成员数 (msgarr) ＝ 2)
+        .如果 (用户_激活账户 (到文本 (fromQQ), msgarr [2]))
+            返回 ＝ 文本_替换 (#激活成功返回, , , , “{QQ}”, 到文本 (fromQQ), , , , , , , , )
+            CQ.发送群消息 (fromGroup, CQ.CQ码_At (fromQQ) ＋ 返回)
+        .否则
+            CQ.发送群消息 (fromGroup, CQ.CQ码_At (fromQQ) ＋ “激活失败,请联系管理员或重试!”)
+        .如果结束
+
+    .否则
+        CQ.发送群消息 (fromGroup, CQ.CQ码_At (fromQQ) ＋ “参数错误!请按照格式”)
+    .如果结束
+
+
+.如果真结束
+
+.如果真 (msgarr [1] ＝ “我的账户”)
+    CQ.发送群消息 (fromGroup, CQ.CQ码_At (fromQQ) ＋ 用户_信息_处理后 (到文本 (fromQQ)))
+.如果真结束
+
+.如果真 (msgarr [1] ＝ “查询未完成的订单”)
+    CQ.发送群消息 (fromGroup, CQ.CQ码_At (fromQQ) ＋ 订单_获取最近十个订单_处理后 (到文本 (fromQQ)))
+.如果真结束
+
+
+' /************************超级管理员用户**********************/
+
+
+.如果真 (用户_是否为管理 (到文本 (fromQQ)) ＝ 2)
+
+    .如果真 (msgarr [1] ＝ “添加管理员”)
+        .如果 (取数组成员数 (msgarr) ＝ 2)
+            .如果真 (用户_添加管理 (msgarr [2]))
+                CQ.发送群消息 (fromGroup, CQ.CQ码_At (fromQQ) ＋ “BeeRry代理订单系统：” ＋ #换行符 ＋ “已成功为账户[” ＋ msgarr [2] ＋ “]激活管理员权限！”)
+            .如果真结束
+
+        .否则
+            CQ.发送群消息 (fromGroup, CQ.CQ码_At (fromQQ) ＋ “参数错误!请按照格式”)
+        .如果结束
+
+    .如果真结束
+
+    .如果真 (msgarr [1] ＝ “充值”)
+        .如果 (取数组成员数 (msgarr) ＝ 3)
+            .如果真 (用户_充值 (msgarr [2], 到整数 (msgarr [3])))
+                CQ.发送群消息 (fromGroup, CQ.CQ码_At (fromQQ) ＋ “BeeRry代理订单系统：” ＋ #换行符 ＋ “已成功为账户[” ＋ msgarr [2] ＋ “] 充值” ＋ msgarr [3] ＋ “ R币余额！”)
+            .如果真结束
+
+        .否则
+            CQ.发送群消息 (fromGroup, CQ.CQ码_At (fromQQ) ＋ “参数错误!请按照格式”)
+        .如果结束
+
+    .如果真结束
+
+
+.如果真结束
+
+
+' /*****************管理员用户***************************/
+
+.如果真 (用户_是否为管理 (到文本 (fromQQ)) ＝ 2 或 用户_是否为管理 (到文本 (fromQQ)) ＝ 1)
+    .如果真 (msgarr [1] ＝ “查询指定账户”)
+        .如果 (取数组成员数 (msgarr) ＝ 2)
+            CQ.发送群消息 (fromGroup, CQ.CQ码_At (fromQQ) ＋ 用户_信息_处理后 (msgarr [2]))
+
+        .否则
+            CQ.发送群消息 (fromGroup, CQ.CQ码_At (fromQQ) ＋ “参数错误!请按照格式”)
+        .如果结束
+
+    .如果真结束
+
+    .如果真 (msgarr [1] ＝ “创建商品”)
+        .如果 (取数组成员数 (msgarr) ≥ 4)
+            canshu ＝ (取数组成员数 (msgarr) － 4) ÷ 2
+            .如果 (canshu ＝ 0)
+                CQ.发送群消息 (fromGroup, CQ.CQ码_At (fromQQ) ＋ 商品_添加商品 (msgarr [2], msgarr [3], msgarr [4], “empty”, “empty”, “empty”, “empty”, “empty”, “empty”, “empty”, “empty”))
+            .否则
+                .如果 (canshu ＝ 1)
+                    CQ.发送群消息 (fromGroup, CQ.CQ码_At (fromQQ) ＋ 商品_添加商品 (msgarr [2], msgarr [3], msgarr [4], msgarr [5], msgarr [6], “empty”, “empty”, “empty”, “empty”, “empty”, “empty”))
+                .否则
+                    .如果 (canshu ＝ 2)
+                        CQ.发送群消息 (fromGroup, CQ.CQ码_At (fromQQ) ＋ 商品_添加商品 (msgarr [2], msgarr [3], msgarr [4], msgarr [5], msgarr [6], msgarr [7], msgarr [8], “empty”, “empty”, “empty”, “empty”))
+                    .否则
+                        .如果 (canshu ＝ 3)
+                            CQ.发送群消息 (fromGroup, CQ.CQ码_At (fromQQ) ＋ 商品_添加商品 (msgarr [2], msgarr [3], msgarr [4], msgarr [5], msgarr [6], msgarr [7], msgarr [8], msgarr [9], msgarr [10], “empty”, “empty”))
+                        .否则
+                            .如果 (canshu ＝ 4)
+                                CQ.发送群消息 (fromGroup, CQ.CQ码_At (fromQQ) ＋ 商品_添加商品 (msgarr [2], msgarr [3], msgarr [4], msgarr [5], msgarr [6], msgarr [7], msgarr [8], msgarr [9], msgarr [10], msgarr [11], msgarr [12]))
+                            .否则
+                                CQ.发送群消息 (fromGroup, CQ.CQ码_At (fromQQ) ＋ “UnKnown Error!”)
+                            .如果结束
+
+                        .如果结束
+
+                    .如果结束
+
+                .如果结束
+
+            .如果结束
+
+        .否则
+            CQ.发送群消息 (fromGroup, CQ.CQ码_At (fromQQ) ＋ “参数错误!请按照格式”)
+        .如果结束
+
+
+    .如果真结束
+
+    .如果真 (msgarr [1] ＝ “删除商品”)
+        .如果 (取数组成员数 (msgarr) ＝ 2)
+            商品_删除商品 (msgarr [2])
+            CQ.发送群消息 (fromGroup, CQ.CQ码_At (fromQQ) ＋ “已经删除” ＋ msgarr [2])
+        .否则
+            CQ.发送群消息 (fromGroup, CQ.CQ码_At (fromQQ) ＋ “参数错误!请按照格式”)
+        .如果结束
+
+    .如果真结束
+
+    .如果真 (msgarr [1] ＝ “下架商品”)
+        .如果 (取数组成员数 (msgarr) ＝ 2)
+            商品_下架商品 (msgarr [2])
+            CQ.发送群消息 (fromGroup, CQ.CQ码_At (fromQQ) ＋ “已经下架” ＋ msgarr [2])
+        .否则
+            CQ.发送群消息 (fromGroup, CQ.CQ码_At (fromQQ) ＋ “参数错误!请按照格式”)
+        .如果结束
+
+    .如果真结束
+
+    .如果真 (msgarr [1] ＝ “恢复商品”)
+        .如果 (取数组成员数 (msgarr) ＝ 2)
+            商品_恢复商品 (msgarr [2])
+            CQ.发送群消息 (fromGroup, CQ.CQ码_At (fromQQ) ＋ “已经恢复” ＋ msgarr [2])
+        .否则
+            CQ.发送群消息 (fromGroup, CQ.CQ码_At (fromQQ) ＋ “参数错误!请按照格式”)
+        .如果结束
+
+    .如果真结束
+
+.如果真结束
+
